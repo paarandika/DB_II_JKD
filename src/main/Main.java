@@ -4,11 +4,15 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.lucene.analysis.Analyzer;
+import org.neo4j.graphdb.Node;
+
 import ucsc.beans.Customer;
 import ucsc.beans.Item;
 import ucsc.beans.Manufacturer;
 import ucsc.beans.Order;
 import ucsc.beans.Product;
+import ucsc.managers.OrderAnalyzer;
 import ucsc.managers.OrderManager;
 
 public class Main {
@@ -37,9 +41,15 @@ public class Main {
 		list.add(item);
 		order.setItemsPurchased(list);
 		order.setCustomer(customer);
-		OrderManager manager=new OrderManager();
-		manager.addOrder(order);
+		//OrderManager manager=new OrderManager();
+		//manager.addOrder(order);
 		System.out.println("done");
+		
+		OrderAnalyzer oa = new  OrderAnalyzer();
+		oa.startAnalyzer();
+		Node n1 = oa.addOrder("Buyer", "raveen");
+		Node n2 = oa.addOrder("Product","phone",n1);
+		
 
 	}
 
