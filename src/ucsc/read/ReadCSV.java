@@ -87,56 +87,56 @@ public class ReadCSV {
 				String[] fin = line.split(",");
 
 				String insertManufacturer = "INSERT INTO manufacturer"
-						+ "(name, country) VALUES"
-						+ "(?,?)";
+						+ "(name, country) VALUES" + "(?,?)";
 
 				try {
-					PreparedStatement preparedStatement = con.prepareStatement(
-							insertManufacturer, Statement.RETURN_GENERATED_KEYS);
+					PreparedStatement preparedStatement = con
+							.prepareStatement(insertManufacturer,
+									Statement.RETURN_GENERATED_KEYS);
 					preparedStatement.setString(1, fin[4]);
 					preparedStatement.setString(2, fin[5]);
 					preparedStatement.executeUpdate();
-					ResultSet rs =preparedStatement.getGeneratedKeys();
+					ResultSet rs = preparedStatement.getGeneratedKeys();
 					rs.next();
-				     manNo=rs.getInt(1);
+					manNo = rs.getInt(1);
 				} catch (MySQLIntegrityConstraintViolationException e) {
 					Statement stmt = con.createStatement();
-
-				      String sql = "SELECT id FROM manufacturer WHERE name='"+fin[4]+"'";
-				      ResultSet rs = stmt.executeQuery(sql);
-				      rs.next();
-				      manNo=rs.getInt("id");
-				}catch (Exception e) {
+					String sql = "SELECT id FROM manufacturer WHERE name='"
+							+ fin[4] + "'";
+					ResultSet rs = stmt.executeQuery(sql);
+					rs.next();
+					manNo = rs.getInt("id");
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
-				
+
 				String insertCategory = "INSERT INTO Category"
-						+ "(name) VALUES"
-						+ "(?)";
-				
+						+ "(name) VALUES" + "(?)";
+
 				try {
 					PreparedStatement preparedStatement = con.prepareStatement(
 							insertCategory, Statement.RETURN_GENERATED_KEYS);
 					preparedStatement.setString(1, fin[1]);
 					preparedStatement.executeUpdate();
-					ResultSet rs =preparedStatement.getGeneratedKeys();
+					ResultSet rs = preparedStatement.getGeneratedKeys();
 					rs.next();
-				    catNo=rs.getInt(1);
+					catNo = rs.getInt(1);
 				} catch (MySQLIntegrityConstraintViolationException e) {
 					Statement stmt = con.createStatement();
 
-				      String sql = "SELECT id FROM category WHERE name='"+fin[1]+"'";
-				      ResultSet rs = stmt.executeQuery(sql);
-				      rs.next();
-				      catNo=rs.getInt("id");
-				}catch (Exception e) {
+					String sql = "SELECT id FROM category WHERE name='"
+							+ fin[1] + "'";
+					ResultSet rs = stmt.executeQuery(sql);
+					rs.next();
+					catNo = rs.getInt("id");
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
-				
+
 				String insertProduct = "INSERT INTO product"
 						+ "(barcode, name, price, category, manufacturer) VALUES"
 						+ "(?,?,?,?,?)";
-				
+
 				try {
 					PreparedStatement preparedStatement = con.prepareStatement(
 							insertProduct, Statement.RETURN_GENERATED_KEYS);
@@ -146,10 +146,10 @@ public class ReadCSV {
 					preparedStatement.setInt(4, catNo);
 					preparedStatement.setInt(5, manNo);
 					preparedStatement.executeUpdate();
-				}catch (Exception e) {
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
-				
+
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -24,7 +24,7 @@ public class OrderManager {
 				man.put("country", item.getProduct().getManufacturer().getCountry());
 				BasicDBObject pro = new BasicDBObject();
 				pro.put("barcode", item.getProduct().getBarcode());
-				pro.put("memberName", item.getProduct().getMemberName());
+				pro.put("memberName", item.getProduct().getName());
 				pro.put("price", item.getProduct().getPrice());
 				pro.put("category", item.getProduct().getCategory());
 				pro.put("manufacturer", man);

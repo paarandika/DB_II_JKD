@@ -11,6 +11,7 @@ import ucsc.beans.Manufacturer;
 import ucsc.beans.Order;
 import ucsc.beans.Product;
 import ucsc.db.SQLCon;
+import ucsc.managers.Fetch;
 import ucsc.managers.OrderManager;
 import ucsc.read.ReadCSV;
 
@@ -48,6 +49,8 @@ public class Main {
 //		ReadCSV rc=new ReadCSV();
 //		rc.readCustomer();
 //		rc.readProduct();
+		Fetch fetch=new Fetch();
+		fetch.fetchProduct();
 
 	}
 
