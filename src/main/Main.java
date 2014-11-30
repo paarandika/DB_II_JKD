@@ -45,8 +45,9 @@ public class Main {
 //		System.out.println("done");
 		
 		
-		ReadCSV rc=new ReadCSV();
-		rc.readCustomer();
+//		ReadCSV rc=new ReadCSV();
+//		rc.readCustomer();
+//		rc.readProduct();
 
 	}
 
