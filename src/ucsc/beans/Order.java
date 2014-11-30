@@ -1,13 +1,14 @@
 package ucsc.beans;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 public class Order implements Serializable{
 	private String orderID;
 	private List<Item> itemsPurchased;
 	private Customer customer;
-	private long orderTime;
+	private Date orderTime;
 	
 	public String getOrderID() {
 		return orderID;
@@ -27,10 +28,10 @@ public class Order implements Serializable{
 	public void setCustomer(Customer customer) {
 		this.customer = customer;
 	}
-	public long getOrderTime() {
+	public Date getOrderTime() {
 		return orderTime;
 	}
-	public void setOrderTime(long orderTime) {
+	public void setOrderTime(Date orderTime) {
 		this.orderTime = orderTime;
 	}
 
