@@ -19,21 +19,23 @@ import ucsc.db.SQLCon;
 public class Fetch {
 
 	private int MAX_QUANTITY = 10;
-	private int MAX_ITEMS = 10;
+	private int MAX_ITEMS = 5;
 
 	public Order fetch() {
 		Order order = new Order();
 		Random rand = new Random();
 		Customer customer = fetchCustomer();
 		List<Item> list = new ArrayList<Item>();
-		int items = rand.nextInt(MAX_ITEMS);
+		int items = rand.nextInt(MAX_ITEMS)+1;
+		float total=0;
 		for (int x = 0; x < items; x++) {
 			Item item = new Item();
 			Product product = fetchProduct();
 //			System.out.println(product.getName());
-			int quantity = rand.nextInt(MAX_QUANTITY);
+			int quantity = rand.nextInt(MAX_QUANTITY)+1;
 			item.setQuantity(quantity);
 			item.setAmount(quantity * product.getPrice());
+			total+=quantity * product.getPrice();
 //			System.out.println("q:"+quantity+"   am: "+item.getAmount());
 			item.setProduct(product);
 			list.add(item);
@@ -41,6 +43,7 @@ public class Fetch {
 		order.setCustomer(customer);
 		order.setItemsPurchased(list);
 		order.setOrderTime(randDate());
+		order.setToatalAmount(total);
 		return order;
 	}
 
@@ -76,7 +79,7 @@ public class Fetch {
 			ResultSet rs = stmt.executeQuery(sql);
 			rs.next();
 			product.setBarcode(rs.getString("barcode"));
-			product.setName(rs.getString("name"));
+			product.setMemberName(rs.getString("name"));
 			product.setPrice(rs.getFloat("price"));
 			Manufacturer manufacturer = new Manufacturer();
 			manufacturer.setName(rs.getString("m_name"));

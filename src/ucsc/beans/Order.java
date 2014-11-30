@@ -9,6 +9,7 @@ public class Order implements Serializable{
 	private List<Item> itemsPurchased;
 	private Customer customer;
 	private Date orderTime;
+	private float toatalAmount;
 	
 	public String getOrderID() {
 		return orderID;
@@ -33,6 +34,12 @@ public class Order implements Serializable{
 	}
 	public void setOrderTime(Date orderTime) {
 		this.orderTime = orderTime;
+	}
+	public float getToatalAmount() {
+		return toatalAmount;
+	}
+	public void setToatalAmount(float toatalAmount) {
+		this.toatalAmount = toatalAmount;
 	}
 
 }

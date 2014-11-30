@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class Product implements Serializable{
 	private String barcode;
-	private String name;
+	private String memberName;
 	private float price;
 	private String category;
 	Manufacturer manufacturer;
@@ -15,11 +15,11 @@ public class Product implements Serializable{
 	public void setBarcode(String barcode) {
 		this.barcode = barcode;
 	}
-	public String getName() {
-		return name;
+	public String getMemberName() {
+		return memberName;
 	}
-	public void setName(String name) {
-		this.name = name;
+	public void setMemberName(String mamberName) {
+		this.memberName = mamberName;
 	}
 	public float getPrice() {
 		return price;
