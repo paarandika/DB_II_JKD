@@ -20,16 +20,17 @@ public class Main {
 	public static void main(String[] args) {
 	
 		ReadCSV rc=new ReadCSV();
-		rc.readCustomer();
-		rc.readProduct();
-		Fetch fetch=new Fetch();
+		//rc.readCustomer();
+		//rc.readProduct();
+		//Fetch fetch=new Fetch();
 		OrderManager manager=new OrderManager();
-		int i=1;
-		for (int x=0;x<i;x++){
-			Order order=fetch.fetch();
-			manager.addOrder(order);
-			
-		}
+		manager.getMaxCust(12);
+//		int i=23;
+//		for (int x=0;x<i;x++){
+//			Order order=fetch.fetch();
+//			manager.addOrder(order);
+//			
+//		}
 
 	}
 

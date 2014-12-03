@@ -2,10 +2,13 @@ package ucsc.managers;
 
 import java.util.Date;
 
+import com.mongodb.AggregationOutput;
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
+import com.mongodb.DBCursor;
+import com.mongodb.DBObject;
 
 import ucsc.beans.Item;
 import ucsc.beans.Order;
@@ -56,6 +59,43 @@ public class OrderManager {
 		}
 		return true;
 		
+	}
+	public void getMaxCust(int ref){
+		/*
+		 * db.order.aggregate([
+				{$project:{"totalAmount":1,
+           			"customer":"$customer.name",
+           			"month":{$month:"$orderTime"}}},
+				{$match:{"month":12}},
+				{$group:{"_id":"$customer",
+         			"sum":{$sum:"$totalAmount"},
+         			"customer":{$first:"$customer"}}},
+				{ $sort : { sum:-1 } },
+				{$limit:10}
+			]);
+		 */
+		DB db=MongoCon.getMongoInstance();
+		DBCollection table = db.getCollection("order");
+		BasicDBObject project = new BasicDBObject();
+		BasicDBObject month = new BasicDBObject("$month","$orderTime");
+		project.put("totalAmount",1);
+		project.put("customer", "$customer.name");
+		project.put("month",month);
+		BasicDBObject project2 = new BasicDBObject("$project",project);
+		BasicDBObject match = new BasicDBObject("$match",new BasicDBObject("month",ref));
+		BasicDBObject group = new BasicDBObject();
+		BasicDBObject sum = new BasicDBObject("$sum","$totalAmount");
+		BasicDBObject customer = new BasicDBObject("$first","$customer");
+		group.put("_id", "$customer");
+		group.put("sum",sum);
+		group.put("customer",customer);
+		BasicDBObject group2 = new BasicDBObject("$group",group);
+		BasicDBObject sort = new BasicDBObject("$sort",new BasicDBObject("sum",-1));
+		BasicDBObject limit = new BasicDBObject("$limit",10);
+		AggregationOutput output =table.aggregate(project2,match,group2,sort,limit);
+	    for(DBObject result : output.results()) {
+	        System.out.println(result);
+	    }
 	}
 
 }
