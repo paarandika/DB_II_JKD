@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Scanner;
 
 import ucsc.beans.Customer;
 import ucsc.beans.Item;
@@ -20,17 +21,24 @@ public class Main {
 	public static void main(String[] args) {
 	
 		ReadCSV rc=new ReadCSV();
-		//rc.readCustomer();
-		//rc.readProduct();
-		//Fetch fetch=new Fetch();
+		rc.readCustomer();
+		rc.readProduct();
+		Fetch fetch=new Fetch();
 		OrderManager manager=new OrderManager();
-		manager.getMaxCust(12);
-//		int i=23;
-//		for (int x=0;x<i;x++){
-//			Order order=fetch.fetch();
-//			manager.addOrder(order);
-//			
-//		}
+		Scanner sc = new Scanner(System.in);
+		System.out.print("Number of random records to add to MongoDB : ");
+	    int i = sc.nextInt();
+		for (int x=0;x<i;x++){
+			Order order=fetch.fetch();
+			manager.addOrder(order);
+			
+		}
+		System.out.print("Month to check income by day(input month as integer) : ");
+	    i = sc.nextInt();
+	    manager.getIncome(i);
+	    System.out.print("Month to check top 10 buyers(input month as integer) : ");
+	    i = sc.nextInt();
+	    manager.getMaxCust(i);
 
 	}
 

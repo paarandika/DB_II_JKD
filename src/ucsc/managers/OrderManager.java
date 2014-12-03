@@ -66,7 +66,7 @@ public class OrderManager {
 				{$project:{"totalAmount":1,
            			"customer":"$customer.name",
            			"month":{$month:"$orderTime"}}},
-				{$match:{"month":12}},
+				{$match:{"month":1}},
 				{$group:{"_id":"$customer",
          			"sum":{$sum:"$totalAmount"},
          			"customer":{$first:"$customer"}}},
@@ -74,6 +74,7 @@ public class OrderManager {
 				{$limit:10}
 			]);
 		 */
+		System.out.println("\n****Top 10 buying customers****");
 		DB db=MongoCon.getMongoInstance();
 		DBCollection table = db.getCollection("order");
 		BasicDBObject project = new BasicDBObject();
@@ -85,14 +86,55 @@ public class OrderManager {
 		BasicDBObject match = new BasicDBObject("$match",new BasicDBObject("month",ref));
 		BasicDBObject group = new BasicDBObject();
 		BasicDBObject sum = new BasicDBObject("$sum","$totalAmount");
-		BasicDBObject customer = new BasicDBObject("$first","$customer");
 		group.put("_id", "$customer");
 		group.put("sum",sum);
-		group.put("customer",customer);
 		BasicDBObject group2 = new BasicDBObject("$group",group);
 		BasicDBObject sort = new BasicDBObject("$sort",new BasicDBObject("sum",-1));
 		BasicDBObject limit = new BasicDBObject("$limit",10);
 		AggregationOutput output =table.aggregate(project2,match,group2,sort,limit);
+	    for(DBObject result : output.results()) {
+	        System.out.println(result);
+	    }
+	}
+	public void getIncome(int ref){
+		/*
+		 * db.order.aggregate([
+{$project:{"totalAmount":1,
+           "day":{$dayOfMonth:"$orderTime"},
+           "month":{$month:"$orderTime"}}},
+{$match:{"month":1}},
+{$group:{"_id":"$day",
+         "sum":{$sum:"$totalAmount"},
+         "day":{$first:"$day"}}},
+{$project:{"_id":0,
+           "sum":1,
+           "day":1}}
+])
+		 */
+		System.out.println("\n****Income By day****");
+		DB db=MongoCon.getMongoInstance();
+		DBCollection table = db.getCollection("order");
+		BasicDBObject project = new BasicDBObject();
+		BasicDBObject month = new BasicDBObject("$month","$orderTime");
+		project.put("totalAmount",1);
+		project.put("day", new BasicDBObject("$dayOfMonth","$orderTime"));
+		project.put("month",month);
+		BasicDBObject project2 = new BasicDBObject("$project",project);
+		BasicDBObject match = new BasicDBObject("$match",new BasicDBObject("month",ref));
+		BasicDBObject group = new BasicDBObject();
+		BasicDBObject sum = new BasicDBObject("$sum","$totalAmount");
+		BasicDBObject day = new BasicDBObject("$first","$day");
+		group.put("_id", "$day");
+		group.put("sum",sum);
+		group.put("day", day);
+		BasicDBObject group2 = new BasicDBObject("$group",group);
+		BasicDBObject project3= new BasicDBObject();
+		project3.put("_id", 0);
+		project3.put("sum",1);
+		project3.put("day",1);
+		BasicDBObject project4= new BasicDBObject("$project",project3);
+		BasicDBObject sort = new BasicDBObject("$sort",new BasicDBObject("day",1));
+		AggregationOutput output =table.aggregate(project2,match,group2,project4,sort);
 	    for(DBObject result : output.results()) {
 	        System.out.println(result);
 	    }
