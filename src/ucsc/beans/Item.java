@@ -8,6 +8,7 @@ public class Item extends BasicDBObject{
 	private Product product;
 	private int quantity;
 	private float amount;
+	private String memberName;
 	
 	public Product getProduct() {
 		return product;
@@ -26,6 +27,12 @@ public class Item extends BasicDBObject{
 	}
 	public void setAmount(float amount) {
 		this.amount = amount;
+	}
+	public String getMemberName() {
+		return memberName;
+	}
+	public void setMemberName(String memberName) {
+		this.memberName = memberName;
 	}
 
 }
