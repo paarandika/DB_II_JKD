@@ -1,7 +1,11 @@
 package ucsc.managers;
 
+import java.util.ArrayList;
 import java.util.Date;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.mongodb.AggregationOutput;
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
@@ -10,6 +14,7 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 
+import ucsc.beans.Customer;
 import ucsc.beans.Item;
 import ucsc.beans.Order;
 import ucsc.db.MongoCon;
@@ -138,6 +143,72 @@ public class OrderManager {
 	    for(DBObject result : output.results()) {
 	        System.out.println(result);
 	    }
+	}
+	
+	
+	//ordermanager get order details
+	
+	public ArrayList<Order> getOrder()
+	{
+		DB db=MongoCon.getMongoInstance();
+		
+
+		
+		ArrayList<Order> orders= new ArrayList();
+
+		
+		BasicDBObject query = new BasicDBObject();
+		BasicDBObject field = new BasicDBObject();
+		field.put("itemsPurchased",1);
+		DBCursor cursor = db.getCollection("order").find(query,field);
+		
+		field.put("customer",1);
+		DBCursor cursorCus = db.getCollection("order").find(query,field);
+		
+		while (cursor.hasNext()) {
+		    BasicDBObject obj = (BasicDBObject) cursor.next();
+		    BasicDBObject objCus = (BasicDBObject) cursorCus.next();
+		    
+			Order order = new Order();
+			
+		    Gson gson = new Gson();
+		    
+		    Customer cs = new Customer();
+		    
+			ArrayList<Item> items = new ArrayList();
+			
+				//convert the json string back to object
+			JsonArray object = gson.fromJson(obj.get("itemsPurchased").toString(), JsonArray.class);
+			
+			JsonObject objectCus = gson.fromJson(objCus.get("customer").toString(), JsonObject.class);
+			
+			cs.setName(objectCus.get("name").getAsString());
+			order.setCustomer(cs);
+			//Item purchase list
+			for (int i = 0; i < object.size(); i++) {
+				
+				Item item=new Item();
+				
+				JsonObject jo = new JsonObject();
+				jo = (JsonObject) object.get(i);
+				
+				JsonObject joPro = new JsonObject();
+				joPro = (JsonObject) jo.get("product");
+				
+				Order od = new Order();
+				item.setQuantity(jo.get("quantity").getAsInt());
+				item.setMemberName(joPro.get("memberName").getAsString());
+				items.add(item);
+				//System.out.println(joPro.get("memberName").getAsString());
+			}
+			
+			order.setItemsPurchased(items);
+			orders.add(order);
+			//System.out.println(objectCus.get("name").getAsString());	
+			
+		}
+		
+		return orders;
 	}
 
 }
