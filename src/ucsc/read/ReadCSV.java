@@ -52,8 +52,9 @@ public class ReadCSV {
 					preparedStatement.setString(5, fin[4]);
 					preparedStatement.setString(6, fin[5]);
 					preparedStatement.executeUpdate();
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
+				} catch (MySQLIntegrityConstraintViolationException e) {
+					System.out.println("Record "+fin[1]+" already exists!");
+				}catch (SQLException e) {
 					e.printStackTrace();
 				}
 			}
@@ -146,7 +147,9 @@ public class ReadCSV {
 					preparedStatement.setInt(4, catNo);
 					preparedStatement.setInt(5, manNo);
 					preparedStatement.executeUpdate();
-				} catch (Exception e) {
+				} catch (MySQLIntegrityConstraintViolationException e) {
+					System.out.println("Record "+fin[0]+" already exists!");
+				}catch (Exception e) {
 					e.printStackTrace();
 				}
 
